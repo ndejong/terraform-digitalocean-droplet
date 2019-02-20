@@ -34,6 +34,8 @@ module "terraform-digitalocean-droplet" {
   initial_user = "ndejong"
   initial_user_sshkeys = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDfJI1CKh5EATdGU7ZOPUo1hwQb9Rhk5U4EI9q9JXL2s3zyoVThDkGMx2LZWv+cfRIT2un57tZmbM+S7xNexjWp6S62Fkk1pkVEVEmv4nlVZe4KtzVq8uc8jR6OBiydxrft5zQ1/8XUjZgIX9+kJ5X9YaZTztKAGELHh3gDHMqnt5RpWbqxBd7weiAnRJebTRocr9dnrJvbHkvpc7uiGfMVlILOajg94WxIWHBxNstDUZfZFIPBwiX/Dkk7CKSM+hF0VVPpKXqoWfGCt3QQfUSiK1xp2dpOD4dBtX/fxiEqqq+W4lcPjM2iaN1IVW2iv6vBMUKqkzfLrgsXbdmUkfLp9qTqLsC8JWpdUd8Hm2fDP5DV8RcO4HaXT4FgDrPZVrxRcjYO7iwe0C3PQFhUxQ6AasuAEtLMy38Wi9SLNQPE/KNhQU8U9fHzOUwdQfZDlx8bC8DsOIdwuE4zZYEMvuGmUeR0BgMsq9LPZSdFRKiScEouz9kofPTQ6FYbIVEcXoGpFzG3bU7aIA5CbZWHeVnIcHbiieRmHb2pGHmxuafpTvQCdmezbXanmfy/OhgQahgcH6wuBalsSyHDFoTxDIJEqrlJDpJK4hV//IsSf+QtDqON46mxZrvcStc7erSk6wbbzvPHjLqmWcRcCeTIgWvppLaeTJ+81li6ia0oPqeOBQ== ndejong"
   
+  user_data = "#cloud-config\npackages:\n - python"
+  
   # digitalocean_volume0 = "[mount-point]:[mount-device]:[volume-id]:[mount-fstype]"
   # digitalocean_volume0 = "/mnt:/dev/disk/by-id/scsi-0DO_Volume_example01:0010c05e-20ad-10e0-9007-00000c113408:ext4"
 }

@@ -34,7 +34,7 @@ module "terraform-digitalocean-droplet" {
   initial_user = "ndejong"
   initial_user_sshkeys = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDfJI1CKh5EATdGU7ZOPUo1hwQb9Rhk5U4EI9q9JXL2s3zyoVThDkGMx2LZWv+cfRIT2un57tZmbM+S7xNexjWp6S62Fkk1pkVEVEmv4nlVZe4KtzVq8uc8jR6OBiydxrft5zQ1/8XUjZgIX9+kJ5X9YaZTztKAGELHh3gDHMqnt5RpWbqxBd7weiAnRJebTRocr9dnrJvbHkvpc7uiGfMVlILOajg94WxIWHBxNstDUZfZFIPBwiX/Dkk7CKSM+hF0VVPpKXqoWfGCt3QQfUSiK1xp2dpOD4dBtX/fxiEqqq+W4lcPjM2iaN1IVW2iv6vBMUKqkzfLrgsXbdmUkfLp9qTqLsC8JWpdUd8Hm2fDP5DV8RcO4HaXT4FgDrPZVrxRcjYO7iwe0C3PQFhUxQ6AasuAEtLMy38Wi9SLNQPE/KNhQU8U9fHzOUwdQfZDlx8bC8DsOIdwuE4zZYEMvuGmUeR0BgMsq9LPZSdFRKiScEouz9kofPTQ6FYbIVEcXoGpFzG3bU7aIA5CbZWHeVnIcHbiieRmHb2pGHmxuafpTvQCdmezbXanmfy/OhgQahgcH6wuBalsSyHDFoTxDIJEqrlJDpJK4hV//IsSf+QtDqON46mxZrvcStc7erSk6wbbzvPHjLqmWcRcCeTIgWvppLaeTJ+81li6ia0oPqeOBQ== ndejong"
   
-  # digitalocean_volume0 = "<mount-point>:<mount-device>:<volume-id>:<mount-fstype>"
+  # digitalocean_volume0 = "[mount-point]:[mount-device]:[volume-id]:[mount-fstype]"
   # digitalocean_volume0 = "/mnt:/dev/disk/by-id/scsi-0DO_Volume_example01:0010c05e-20ad-10e0-9007-00000c113408:ext4"
 }
 
@@ -47,9 +47,9 @@ output "volume0" { value = "${module.terraform-digitalocean-droplet.volume0}" }
 
 #### Note on the `digitalocean_volume0` attribute
 It is optionally possible to mount a pre-existing volume to your Droplet by providing the mount details in the 
-following format `<mount-point>:<mount-device>:<volume-id>:<mount-fstype>`
+following format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
 
-Obtaining the `<volume-id>` value is not straight-forward through the Digital Ocean web admin user interface and 
+Obtaining the `[volume-id]` value is not straight-forward through the Digital Ocean web admin user interface and 
 requires that you call their API to obtain it.  You can consider using the [digitalocean-api-query](https://github.com/verbnetworks/digitalocean-api-query)
 cli tool with the "volumes" argument to discover this value.
 
@@ -130,11 +130,11 @@ List of tags to apply to this Droplet, the tags MUST already exist!
  - default = []
  
 ### digitalocean_volume0
-Volume0 to attach to this digitalocean-droplet in the format `<mount-point>:<mount-device>:<volume-id>:<mount-fstype>` - review README for information on discovering the <volume-id> value.
+Volume0 to attach to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]` - review README for information on discovering the <volume-id> value.
  - default = ""
 
 ### digitalocean_volume1
-Volume1 to attach to this digitalocean-droplet in the format `<mount-point>:<mount-device>:<volume-id>:<mount-fstype>` - review README for information on discovering the <volume-id> value.
+Volume1 to attach to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]` - review README for information on discovering the <volume-id> value.
  - default = ""
 
 
@@ -162,10 +162,10 @@ The public IPv6 address of this digitalocean-droplet.
 The private IPv6 address of this digitalocean-droplet.
 
 ### volume0
-Volume0 attached to this digitalocean-droplet in the format `<mount-point>:<mount-device>:<volume-id>:<mount-fstype>`
+Volume0 attached to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
 
 ### volume1
-Volume1 attached to this digitalocean-droplet in the format `<mount-point>:<mount-device>:<volume-id>:<mount-fstype>`
+Volume1 attached to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
 
 
 ****

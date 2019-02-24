@@ -41,12 +41,13 @@ data "template_cloudinit_config" "droplet-userdata" {
 
   part {
     content_type = "text/x-shellscript"
-    filename = "droplet-bootstrap.sh"
+    filename = "10-terraform-bootstrap"
     content = "#!/bin/sh\necho -n '${base64gzip(data.template_file.droplet-bootstrap-sh.rendered)}' | base64 -d | gunzip | /bin/sh"
   }
 
   part {
     content = "${var.user_data}"
+    filename = "20-userdata-bootstrap"
   }
 }
 

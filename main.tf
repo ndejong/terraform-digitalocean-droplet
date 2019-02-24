@@ -51,6 +51,13 @@ data "template_cloudinit_config" "droplet-userdata" {
   }
 }
 
+locals {
+  volume_ids = [
+    "${element(split(":", var.digitalocean_volume0),2)}",
+    "${element(split(":", var.digitalocean_volume1),2)}"
+  ]
+}
+
 # Establish the digitalocean_droplet
 # ===
 resource "digitalocean_droplet" "droplet" {
@@ -66,5 +73,5 @@ resource "digitalocean_droplet" "droplet" {
   resize_disk = "${var.digitalocean_resize_disk}"
   tags = "${var.digitalocean_tags}"
   user_data = "${data.template_cloudinit_config.droplet-userdata.rendered}"
-  volume_ids = [ "${element(split(":", var.digitalocean_volume0),2)}", "${element(split(":", var.digitalocean_volume1),2)}" ]
+  volume_ids = "${compact(local.volume_ids)}"
 }

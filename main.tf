@@ -11,7 +11,7 @@
 # ===
 data "template_file" "droplet-bootstrap-sh" {
   template = "${file("${path.module}/data/droplet-bootstrap.sh")}"
-  vars {
+  vars = {
 
     # volume0
     volume0_dev = "${element(split(":", var.digitalocean_volume0),1)}"

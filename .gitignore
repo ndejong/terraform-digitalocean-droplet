@@ -1,3 +1,11 @@
 
 .idea
 .terraform
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+.terraformrc
+terraform.rc

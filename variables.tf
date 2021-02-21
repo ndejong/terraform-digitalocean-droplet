@@ -8,8 +8,16 @@
 #  - http://www.apache.org/licenses/LICENSE-2.0
 
 
-# required variables
+# variables - required
 # ============================================================================
+
+variable "digitalocean_image" {
+  description = "The digitalocean image to use as the base for this digitalocean-droplet."
+  default = "ubuntu-20-04-x64"    # tested and confirmed 2021-02-21
+  # default = "ubuntu-18-04-x64"  # tested and confirmed 2018-07-18
+  # default = "ubuntu-17-10-x64"  # tested and confirmed 2018-03-29, 2018-07-18
+  # default = "ubuntu-16-04-x64"  # tested and confirmed 2018-03-29, 2018-07-18
+}
 
 variable "hostname" {
   description = "The hostname applied to this digitalocean-droplet."
@@ -19,7 +27,12 @@ variable "digitalocean_region" {
   description = "The DigitalOcean region-slug to start this digitalocean-droplet within (nyc1, sgp1, lon1, nyc3, ams3, fra1, tor1, sfo2, blr1)"
 }
 
-# variables - with defined defaults
+variable "digitalocean_size" {
+  description = "The digitalocean droplet size to use for this digitalocean-droplet."
+  default = "s-1vcpu-1gb"
+}
+
+# variables - optional
 # ============================================================================
 
 variable "initial_user" {
@@ -28,30 +41,9 @@ variable "initial_user" {
 }
 
 variable "initial_user_sshkeys" {
-  type = "list"
+  type = list(string)
   description = "The list of ssh authorized_keys values to apply to the initial_user account - the actual ssh public key(s) must be supplied not a reference to an ssh key within a digitalocean account."
   default = []
-}
-
-variable "digitalocean_image" {
-  description = "The digitalocean image to use as the base for this digitalocean-droplet."
-  default = "ubuntu-18-04-x64"    # tested and confirmed 2018-07-18
-  # default = "ubuntu-17-10-x64"  # tested and confirmed 2018-03-29, 2018-07-18
-  # default = "ubuntu-16-04-x64"  # tested and confirmed 2018-03-29, 2018-07-18
-}
-
-variable "digitalocean_size" {
-  description = "The digitalocean droplet size to use for this digitalocean-droplet."
-
-  #
-  # reference:
-  #   https://www.digitalocean.com/docs/release-notes/2018/droplet-bandwidth-billing/
-  #
-  # helpful cli tool to discover digitalocean droplet size values - use the "regions" argument:
-  #   https://github.com/verbnetworks/digitalocean-api-query
-  #
-
-  default = "s-1vcpu-1gb"
 }
 
 variable "digitalocean_backups" {
@@ -69,9 +61,20 @@ variable "digitalocean_ipv6" {
   default = false
 }
 
+variable "digitalocean_vpc_uuid" {
+  description = "The ID of the VPC where the Droplet will be located."
+  default = null
+}
+
 variable "digitalocean_private_networking" {
   description = "Enable/disable private-networking functionality on this digitalocean-droplet."
   default = false
+}
+
+variable "digitalocean_ssh_keys" {
+  type = list(string)
+  description = "A list of Digital Ocean SSH ids or sshkey fingerprints to apply to the root account - overwritten by `initial_user_sshkeys` if `initial_user` is root."
+  default = []
 }
 
 variable "digitalocean_resize_disk" {
@@ -79,23 +82,15 @@ variable "digitalocean_resize_disk" {
   default = false
 }
 
-# variables - optional
-# ============================================================================
+variable "digitalocean_tags" {
+  type = list(string)
+  description = "List of tags to apply to this Droplet, these tags MUST already exist!"
+  default = []
+}
+
 variable "user_data" {
   description = "User supplied cloudinit userdata."
   default = "#!/bin/sh"
-}
-
-variable "digitalocean_ssh_keys" {
-  type = "list"
-  description = "A list of Digital Ocean SSH ids or sshkey fingerprints to apply to the root account - overwritten by `initial_user_sshkeys` if `initial_user` is root."
-  default = []
-}
-
-variable "digitalocean_tags" {
-  type = "list"
-  description = "List of tags to apply to this Droplet, these tags MUST already exist!"
-  default = []
 }
 
 variable "digitalocean_volume0" {
@@ -116,3 +111,5 @@ variable "digitalocean_volume1" {
   description = "Volume1 to attach to this digitalocean-droplet in the format <mount-point>:<mount-device>:<volume-id>:<mount-fstype> - review README for information on discovering the <volume-id> value."
   default = ""
 }
+
+

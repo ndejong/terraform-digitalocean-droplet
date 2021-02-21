@@ -7,24 +7,35 @@
 # Apache License v2.0
 #  - http://www.apache.org/licenses/LICENSE-2.0
 
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    digitalocean = {
+      source = "digitalocean/digitalocean"
+    }
+  }
+}
+
+provider "digitalocean" {}
+
 # Render the required userdata
 # ===
 data "template_file" "droplet-bootstrap-sh" {
-  template = "${file("${path.module}/data/droplet-bootstrap.sh")}"
+  template = file("${path.module}/data/droplet-bootstrap.sh")
   vars = {
 
     # volume0
-    volume0_dev = "${element(split(":", var.digitalocean_volume0),1)}"
-    volume0_mount = "${element(split(":", var.digitalocean_volume0),0)}"
-    volume0_fstype = "${element(split(":", var.digitalocean_volume0),3)}"
+    volume0_dev = element(split(":", var.digitalocean_volume0),1)
+    volume0_mount = element(split(":", var.digitalocean_volume0),0)
+    volume0_fstype = element(split(":", var.digitalocean_volume0),3)
 
     # volume1
-    volume1_dev = "${element(split(":", var.digitalocean_volume1),1)}"
-    volume1_mount = "${element(split(":", var.digitalocean_volume1),0)}"
-    volume1_fstype = "${element(split(":", var.digitalocean_volume1),3)}"
+    volume1_dev = element(split(":", var.digitalocean_volume1),1)
+    volume1_mount = element(split(":", var.digitalocean_volume1),0)
+    volume1_fstype = element(split(":", var.digitalocean_volume1),3)
 
-    initial_user = "${var.initial_user}"
-    initial_user_sshkeys = "${join("\n", var.initial_user_sshkeys)}"
+    initial_user = var.initial_user
+    initial_user_sshkeys = join("\n", var.initial_user_sshkeys)
 
   }
 }
@@ -46,32 +57,33 @@ data "template_cloudinit_config" "droplet-userdata" {
   }
 
   part {
-    content = "${var.user_data}"
+    content = var.user_data
     filename = "20-userdata-bootstrap"
   }
 }
 
 locals {
   volume_ids = [
-    "${element(split(":", var.digitalocean_volume0),2)}",
-    "${element(split(":", var.digitalocean_volume1),2)}"
+    element(split(":", var.digitalocean_volume0),2),
+    element(split(":", var.digitalocean_volume1),2)
   ]
 }
 
 # Establish the digitalocean_droplet
 # ===
 resource "digitalocean_droplet" "droplet" {
-  image = "${var.digitalocean_image}"
-  name = "${var.hostname}"
-  region = "${var.digitalocean_region}"
-  size = "${var.digitalocean_size}"
-  backups = "${var.digitalocean_backups}"
-  monitoring = "${var.digitalocean_monitoring}"
-  ipv6 = "${var.digitalocean_ipv6}"
-  private_networking = "${var.digitalocean_private_networking}"
-  ssh_keys = "${var.digitalocean_ssh_keys}"
-  resize_disk = "${var.digitalocean_resize_disk}"
-  tags = "${var.digitalocean_tags}"
-  user_data = "${data.template_cloudinit_config.droplet-userdata.rendered}"
-  volume_ids = "${compact(local.volume_ids)}"
+  image = var.digitalocean_image
+  name = var.hostname
+  region = var.digitalocean_region
+  size = var.digitalocean_size
+  backups = var.digitalocean_backups
+  monitoring = var.digitalocean_monitoring
+  ipv6 = var.digitalocean_ipv6
+  vpc_uuid = var.digitalocean_vpc_uuid
+  private_networking = var.digitalocean_private_networking
+  ssh_keys = var.digitalocean_ssh_keys
+  resize_disk = var.digitalocean_resize_disk
+  tags = compact(var.digitalocean_tags)
+  user_data = data.template_cloudinit_config.droplet-userdata.rendered
+  volume_ids = compact(local.volume_ids)
 }

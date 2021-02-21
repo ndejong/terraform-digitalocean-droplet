@@ -57,9 +57,6 @@ if [ $(echo -n "${initial_user_sshkeys}" | wc -c) -gt 16 ]; then
     chmod 0600 "$initial_user_path/.ssh/authorized_keys"
 fi
 
-# remove root passwd
-sed -i -e '/^root:/s/^.*$/root:\*:17939:0:99999:7:::/' /etc/shadow
-
 # disable root ssh login
 if [ "${initial_user}" != "root" ]; then
     rm -f "/root/.ssh/*.pub"

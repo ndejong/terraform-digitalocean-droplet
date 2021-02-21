@@ -81,7 +81,7 @@ resource "digitalocean_droplet" "droplet" {
   backups = var.digitalocean_backups
   monitoring = var.digitalocean_monitoring
   ipv6 = var.digitalocean_ipv6
-  vpc_uuid = var.digitalocean_vpc_uuid
+  vpc_uuid = var.digitalocean_vpc_uuid == "" ? null : var.digitalocean_vpc_uuid
   private_networking = var.digitalocean_private_networking
   ssh_keys = var.digitalocean_ssh_keys
   resize_disk = var.digitalocean_resize_disk

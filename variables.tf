@@ -30,12 +30,36 @@ variable "hostname" {
 }
 
 variable "digitalocean_region" {
-  description = "The DigitalOcean region-slug to start this digitalocean-droplet within (ams2, ams3, blr1, fra1, lon1, nyc1, nyc2, nyc3, sfo1, sfo2, sfo3, sgp1, tor1)"
+  description = "The DigitalOcean region-slug to start this digitalocean-droplet within"
+
+  # DigitalOcean regions (2021-02-21)
+  # =================================
+  #  - ams2, ams3
+  #  - blr1
+  #  - fra1
+  #  - lon1
+  #  - nyc1, nyc2, nyc3
+  #  - sfo1, sfo2, sfo3
+  #  - sgp1
+  #  - tor1
 }
 
 variable "digitalocean_size" {
   description = "The DigitalOcean Droplet size to use for this digitalocean-droplet."
   default = "s-1vcpu-1gb"
+
+  # DigitalOcean sizes (2021-02-01)
+  # ===============================
+  #  - c-2, c-4, c-8, c-16, c-32
+  #  - c2-2vcpu-4gb, c2-4vcpu-8gb, c2-8vcpu-16gb, c2-16vcpu-32gb, c2-32vcpu-64gb
+  #  - gd-2vcpu-8gb, gd-4vcpu-16gb, gd-8vcpu-32gb, gd-16vcpu-64gb, gd-32vcpu-128gb, gd-40vcpu-160gb
+  #  - g-2vcpu-8gb, g-4vcpu-16gb, g-8vcpu-32gb, g-16vcpu-64gb, g-32vcpu-128gb, g-40vcpu-160gb
+  #  - m3-2vcpu-16gb, m3-4vcpu-32gb, m3-8vcpu-64gb, m3-16vcpu-128gb, m3-24vcpu-192gb, m3-32vcpu-256gb
+  #  - m6-2vcpu-16gb, m6-4vcpu-32gb, m6-8vcpu-64gb, m6-16vcpu-128gb, m6-24vcpu-192gb, m6-32vcpu-256gb
+  #  - m-2vcpu-16gb, m-4vcpu-32gb, m-8vcpu-64gb, m-16vcpu-128gb, m-24vcpu-192gb, m-32vcpu-256gb
+  #  - so1_5-2vcpu-16gb, so1_5-4vcpu-32gb, so1_5-8vcpu-64gb, so1_5-16vcpu-128gb, so1_5-24vcpu-192gb, so1_5-32vcpu-256gb
+  #  - so-2vcpu-16gb, so-4vcpu-32gb, so-8vcpu-64gb, so-16vcpu-128gb, so-24vcpu-192gb, so-32vcpu-256gb
+  #  - s-1vcpu-1gb, s-1vcpu-2gb, s-2vcpu-2gb, s-2vcpu-4gb, s-4vcpu-8gb, s-8vcpu-16gb
 }
 
 # variables - optional
@@ -69,7 +93,7 @@ variable "digitalocean_ipv6" {
 
 variable "digitalocean_vpc_uuid" {
   description = "The ID of the VPC where this DigitalOcean Droplet will be located."
-  default = null
+  default = ""
 }
 
 variable "digitalocean_private_networking" {

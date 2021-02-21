@@ -1,7 +1,7 @@
 # terraform-digitalocean-droplet
 # ============================================================================
 
-# Copyright (c) 2018 Verb Networks Pty Ltd <contact [at] verbnetworks.com>
+# Copyright (c) 2021 Verb Networks Pty Ltd <contact [at] verbnetworks.com>
 #  - All rights reserved.
 #
 # Apache License v2.0

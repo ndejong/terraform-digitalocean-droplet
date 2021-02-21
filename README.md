@@ -4,11 +4,11 @@ Terraform module to create a Digital Ocean Droplet using Terraform with desirabl
  * [Digital Ocean](https://www.digitalocean.com/)
  * [Digital Ocean Terraform Provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs)
 
-The module is essentially a wrapper around the Digital Ocean provider using a `cloudinit` script to provide additional 
-features:-
- * remount existing volumes
- * create an initial user with an sshkey
-
+The module is a helpful convenience wrapper around the standard DigitalOcean provider using `cloud-init` 
+to provide additional features:-
+ * easily remount existing volumes
+ * easily create an initial passwordless sudo user directly with sshkeys
+ * easily add additional `user_data` scripts to bootstrap the Droplet
 
 ## Usage
 This module allows you to establish a Droplet on Digital Ocean as shown in the example below:-
@@ -19,7 +19,7 @@ module "terraform-digitalocean-droplet" {
 
   # required variables
   # ===
-  hostname = "node08"
+  hostname = "awesomehost"
   digitalocean_region = "sgp1"
 
   # optional variables
@@ -40,13 +40,17 @@ output "ipv4_address" { value = "${module.terraform-digitalocean-droplet.ipv4_ad
 output "volume0" { value = "${module.terraform-digitalocean-droplet.volume0}" }
 ```
 
+#### Note on Droplet startup
+When a Droplet first starts it can take time before the cloudinit scripts complete.  Thus, you may notice in the 
+first few minutes when the Droplet starts that the `initial_user` is unable to authenticate.
+
 #### Note on the `digitalocean_volume0` attribute
 It is optionally possible to mount a pre-existing volume to your Droplet by providing the mount details in the 
 following format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
 
-Obtaining the `[volume-id]` value is not straight-forward through the Digital Ocean web admin user interface and 
-requires that you call their API to obtain it.  You can consider using the [digitalocean-api-query](https://github.com/verbnetworks/digitalocean-api-query)
-cli tool with the "volumes" argument to discover this value.
+Obtaining the `[volume-id]` value requires using the Digital Ocean API, you can consider using 
+[digitalocean-api-query](https://github.com/verbnetworks/digitalocean-api-query) as a cli tool using a 
+"volumes" argument to discover this value.
 
 ```text
 $ digitalocean-api-query volumes | jq .volumes
@@ -59,105 +63,24 @@ $ digitalocean-api-query volumes | jq .volumes
 ```
 
 #### Note on the `digitalocean_volume1` attribute
-The fact that volumes are not expressed as a list is an implementation detail left for another time, the hard-coded
-and limited `volume0`, `volume1` situation is clearly not ideal but is probably good enough for many situations. 
+The fact that volumes are not expressed as a list is an implementation detail left for another time.  The issue
+is root in the fact that (older) Terraform has limitations in working with lists.  The hard-coded limit of two 
+volumes is not ideal but good enough for most situations.
 
-****
+## Versions and testing
+The v0.15 `verbnetworks/droplet/digitalocean` module has been tested and is known to with the following
+* Terraform versions
+  - v0.13.0
+  - v0.14.7
+* Terraform provider digitalocean/digitalocean versions
+  - v2.5.1
+* DigitalOcean images
+  - ubuntu-20-10-x64, ubuntu-20-04-x64, ubuntu-18-04-x64, ubuntu-16-04-x64
+  - centos-8-x64, centos-7-x64
+  - fedora-33-x64, fedora-32-x64
+  - debian-10-x64, debian-9-x64
 
-
-## Input Variables - Required
-
-### hostname
-The hostname applied to this strelaysrv-node droplet.
-
-### digitalocean_region
-The DigitalOcean region-slug to start this strelaysrv-node within (nyc1, sgp1, lon1, nyc3, ams3, fra1, tor1, sfo2, blr1)
-
-
-## Input Variables - Optional
-
-### initial_user
-The initial user account to create at this digitalocean-droplet - if not root account then the root account will be disabled via sshd_config PermitRootLogin no.
- - default = "root"
-
-### initial_user_sshkeys
-The list of ssh authorized_keys values to apply to the initial_user account - the actual ssh public key(s) must be supplied not a reference to an ssh key within a digitalocean account.
- - default = []
-
-### user_data
-User supplied cloudinit userdata.
- - default = "#!/bin/sh"
-
-### digitalocean_image
-The digitalocean image to use as the base for this digitalocean-droplet
- - default = "ubuntu-20-04-x64"
-
-### digitalocean_size
-The size to use for this digitalocean-droplet.
-  default = "s-1vcpu-1gb"
-
-### digitalocean_backups
-Enable/disable backup functionality on this digitalocean-droplet.
- - default = false
-
-### digitalocean_monitoring
-Enable/disable monitoring functionality on this digitalocean-droplet.
- - default = true
-
-### digitalocean_ipv6
-Enable/disable getting a public IPv6 on this digitalocean-droplet.
- - default = false
-
-### digitalocean_private_networking
-Enable/disable private-networking functionality on this digitalocean-droplet.
- - default = false
-
-### digitalocean_resize_disk
-Enable/disable resize-disk functionality on this digitalocean-droplet.
- - default = false
-
-### digitalocean_ssh_keys
-A list of Digital Ocean SSH ids or sshkey fingerprints to apply to the root account - overwritten by `initial_user_sshkeys` if `initial_user` is root.
- - default = []
-
-### digitalocean_tags
-List of tags to apply to this Droplet, the tags MUST already exist!
- - default = []
- 
-### digitalocean_volume0
-Volume0 to attach to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]` - review README for information on discovering the <volume-id> value.
- - default = ""
-
-### digitalocean_volume1
-Volume1 to attach to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]` - review README for information on discovering the <volume-id> value.
- - default = ""
-
-
-## Outputs
-
-### hostname
-The hostname applied to this digitalocean-droplet.
-
-### region
-The digitalocean region-slug this digitalocean-droplet is running in.
-
-### droplet_id
-The droplet_id of this digitalocean-droplet.
-
-### ipv4_address
-The public IPv4 address of this digitalocean-droplet.
-
-### ipv4_address_private
-The private IPv4 address of this digitalocean-droplet.
-
-### ipv6_address
-The public IPv6 address of this digitalocean-droplet.
-
-### volume0
-Volume0 attached to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
-
-### volume1
-Volume1 attached to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
+The older v0.13 (and prior) `verbnetworks/droplet/digitalocean` versions are compatible with Terraform up to v0.12
 
 ****
 

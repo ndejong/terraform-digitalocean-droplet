@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (c) 2018 Verb Networks Pty Ltd <contact [at] verbnetworks.com>
+# Copyright (c) 2021 Verb Networks Pty Ltd <contact [at] verbnetworks.com>
 #  - All rights reserved.
 #
 # Apache License v2.0
@@ -56,6 +56,9 @@ if [ $(echo -n "${initial_user_sshkeys}" | wc -c) -gt 16 ]; then
     chmod 0700 "$initial_user_path/.ssh"
     chmod 0600 "$initial_user_path/.ssh/authorized_keys"
 fi
+
+# remove root passwd and reset timeouts
+sed -i -e '/^root:/s/^.*$/root:\*:17000:0:99999:7:::/' /etc/shadow
 
 # disable root ssh login
 if [ "${initial_user}" != "root" ]; then

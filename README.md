@@ -159,7 +159,6 @@ Volume0 attached to this digitalocean-droplet in the format `[mount-point]:[moun
 ### volume1
 Volume1 attached to this digitalocean-droplet in the format `[mount-point]:[mount-device]:[volume-id]:[mount-fstype]`
 
-
 ****
 
 ## Authors

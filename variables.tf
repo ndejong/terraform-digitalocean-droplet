@@ -97,8 +97,8 @@ variable "digitalocean_vpc_uuid" {
 }
 
 variable "digitalocean_private_networking" {
-  description = "Enable/disable private-networking functionality on this DigitalOcean Droplet."
-  default = false
+  description = "Variable is deprecated and all settings will be ignored."
+  default = null
 }
 
 variable "digitalocean_ssh_keys" {

@@ -98,7 +98,7 @@ variable "digitalocean_vpc_uuid" {
 
 variable "digitalocean_private_networking" {
   description = "Variable is deprecated and all settings will be ignored."
-  default = null
+  default = ""
 }
 
 variable "digitalocean_ssh_keys" {

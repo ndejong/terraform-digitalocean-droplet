@@ -18,10 +18,6 @@ terraform {
   }
 }
 
-digitalocean = {
-  source = "digitalocean/digitalocean"
-}
-
 # Render the required userdata
 # ===
 data "template_file" "droplet-bootstrap-sh" {

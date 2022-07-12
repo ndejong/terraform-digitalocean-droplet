@@ -88,7 +88,6 @@ The older v0.13 (and prior) `verbnetworks/droplet/digitalocean` versions are com
 
 ## Authors
 Module managed by
-* [Verb Networks](https://github.com/verbnetworks)
 * [Nicholas de Jong](https://github.com/ndejong)
 
 ## License

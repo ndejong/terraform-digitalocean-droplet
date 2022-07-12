@@ -1,7 +1,7 @@
 # terraform-digitalocean-droplet
 # ============================================================================
 
-# Copyright (c) 2021 Verb Networks Pty Ltd <contact [at] verbnetworks.com>
+# Copyright (c) 2022 Nicholas de Jong <me [at] nicholasdejong.com>
 #  - All rights reserved.
 #
 # Apache License v2.0
@@ -13,8 +13,9 @@
 
 variable "digitalocean_image" {
   description = "The DigitalOcean image to use as the base for this digitalocean-droplet."
+  default = "ubuntu-22-04-x64"     # tested 2022-07-12
   #default = "ubuntu-20-10-x64"    # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7; terraform v0.13.0
-  default = "ubuntu-20-04-x64"    # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7; terraform v0.13.0
+  #default = "ubuntu-20-04-x64"    # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7; terraform v0.13.0
   #default = "ubuntu-18-04-x64"    # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7
   #default = "ubuntu-16-04-x64"    # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7
   #default = "centos-8-x64"        # tested 2021-02-21 :: digitalocean v2.5.1; terraform v0.14.7; terraform v0.13.0
